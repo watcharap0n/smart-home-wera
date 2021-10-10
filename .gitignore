@@ -1,0 +1,12 @@
+.idea
+venv
+environ/client
+__pycache__/app.cpython-39.pyc
+config/__pycache__/db_firebase.cpython-39.pyc
+config/__pycache__/db_pymongo.cpython-39.pyc
+environ/__pycache__/client.cpython-39.pyc
+routes/__pycache__/callback.cpython-39.pyc
+config/line_log.json
+environ/client.py
+environ/__pycache__/heroku_environ.cpython-39.pyc
+environ/client.py
