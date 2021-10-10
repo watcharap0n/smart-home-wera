@@ -13,3 +13,4 @@ set_firebase = {
     "appId": os.environ['appId'],
     "measurementId": os.environ['measurementId']
 }
+
