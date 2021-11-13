@@ -4,6 +4,7 @@ from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import StickerSendMessage, TextSendMessage, TextMessage, MessageEvent
 import json
+from pydantic import BaseModel
 import os
 from config.db_pymongo import MongoDB
 from random import randint
@@ -22,6 +23,14 @@ handler = WebhookHandler(SECRET_LINE)
 router = APIRouter()
 
 
+class Contact(BaseModel):
+    name: Optional[str] = None
+    company: Optional[str] = None
+    email: Optional[str] = None
+    tel: Optional[str] = None
+    other: Optional[str] = None
+
+
 def get_profile(user_id):
     profile = line_bot_api.get_profile(user_id)
     displayName = profile.display_name
@@ -30,6 +39,20 @@ def get_profile(user_id):
     status = profile.status_message
     result = {'displayName': displayName, 'userId': userId, 'img': img, 'status': status}
     return result
+
+
+@router.post('/portfolio/contact')
+async def contact(item: Contact):
+    db.insert_one(collection='portfolio', data=item.dict())
+    name = item.dict()['name']
+    email = item.dict()['email']
+    other = item.dict()['other']
+    company = item.dict()['company']
+    tel = item.dict()['tel']
+    message = f'name: {name}\ncompany: {company}\nemail: {email}\ntel: {tel}\nother: {other}'
+    userId = 'Ub7879a1619d31282518203365aac986d'
+    line_bot_api.push_message(userId, TextSendMessage(text=message))
+    return {'message': 'success', 'status': True}
 
 
 @router.post('/webhook')
