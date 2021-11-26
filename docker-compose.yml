@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    image: kaneai/smarthome-iot
+    container_name: container-iot
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - 80:80
+    volumes:
+      - ./server:/server
